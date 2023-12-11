@@ -1,0 +1,61 @@
+{
+    "name": "dicibi/orgs",
+    "description": "Database and base models for managing corporate structures.",
+    "require": {
+        "php": "^8.0",
+        "illuminate/support": "^8.0|^9.0|^10.0",
+        "illuminate/console": "^8.0|^9.0|^10.0",
+        "illuminate/filesystem": "^8.0|^9.0|^10.0",
+        "illuminate/contracts": "^8.0|^9.0|^10.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0",
+        "jetbrains/phpstorm-attributes": "^1.0",
+        "orchestra/testbench": "^8.17"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aditya Chandra",
+            "email": "addeeandra@gmail.com"
+        },
+        {
+            "name": "Yonathan Susanto",
+            "email": "yonxxx@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Dicibi\\Orgs\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Dicibi\\Orgs\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --colors=always",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage",
+        "post-autoload-dump": [
+            "@php ./vendor/bin/testbench package:discover --ansi"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Dentro\\Yalr\\RouteServiceProvider"
+            ]
+        },
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
+    }
+}
