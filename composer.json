@@ -46,7 +46,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Dentro\\Yalr\\RouteServiceProvider"
+                "Dicibi\\Orgs\\OrgServiceProvider"
             ]
         },
         "branch-alias": {
