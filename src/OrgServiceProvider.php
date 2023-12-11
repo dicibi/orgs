@@ -1,6 +1,6 @@
 <?php
 
-namespace Orgs\Dicibi;
+namespace Dicibi\Orgs;
 
 use Illuminate\Support\ServiceProvider;
 
