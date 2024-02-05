@@ -6,7 +6,9 @@
         "illuminate/support": "^8.0|^9.0|^10.0",
         "illuminate/console": "^8.0|^9.0|^10.0",
         "illuminate/filesystem": "^8.0|^9.0|^10.0",
-        "illuminate/contracts": "^8.0|^9.0|^10.0"
+        "illuminate/contracts": "^8.0|^9.0|^10.0",
+        "kalnoy/nestedset": "^6.0",
+        "dicibi/indoregion": "^2.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0",
