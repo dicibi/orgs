@@ -1,7 +1,0 @@
-#!/bin/bash
-set -Eeo pipefail
-set -o errexit    # Used to exit upon error, avoiding cascading errors
-
-docker run --rm --interactive --tty \
-  --volume $PWD:/app \
-  composer $@
