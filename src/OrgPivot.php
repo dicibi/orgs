@@ -9,7 +9,7 @@ class OrgPivot extends Pivot
 
     public function getTable(): string
     {
-        return (config('prefix') . $this->table) ?? parent::getTable();
+        return config('orgs.prefix') . parent::getTable();
     }
 
 }

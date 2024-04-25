@@ -2,8 +2,8 @@
 
 return [
     // Prefix for every organization table
-    'prefix' => env('ORG_TABLE_PREFIX', 'orgs_'),
+    'prefix' => env('ORG_DB_PREFIX', 'orgs_'),
 
     // User model to relate for office position user
-    'user' => \App\Models\User::class,
+    'user' => env('ORG_MODEL_USER', \App\Models\User::class),
 ];

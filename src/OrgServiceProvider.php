@@ -2,14 +2,19 @@
 
 namespace Dicibi\Orgs;
 
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
 class OrgServiceProvider extends ServiceProvider
 {
 
-    public function register()
+    public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/orgs.php', 'orgs');
+        $this->mergeConfigFrom(__DIR__ . '/../config/orgs.php', 'orgs');
+
+        $this->app->bind('orgs', function (Application $app) {
+            return new OrganizerImpl();
+        });
     }
 
     function boot(): void
@@ -21,7 +26,7 @@ class OrgServiceProvider extends ServiceProvider
         }
 
         if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         }
     }
 

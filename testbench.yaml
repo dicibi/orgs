@@ -1,0 +1,18 @@
+providers:
+  - Dicibi\Orgs\OrgServiceProvider
+
+migrations:
+  - database/migrations
+
+workbench:
+  start: '/'
+  install: true
+  discovers:
+    web: true
+    api: false
+    commands: false
+    components: false
+    views: false
+  build: [ ]
+  assets: [ ]
+  sync: [ ]

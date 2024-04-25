@@ -3,10 +3,15 @@
 namespace Dicibi\Orgs\Models;
 
 use Dicibi\Orgs\OrgModel;
-use Illuminate\Database\Eloquent\Relations;
+use Kalnoy\Nestedset\NodeTrait;
 
+/**
+ * @property string $name
+ * @property string $description
+ */
 class Structure extends OrgModel
 {
+    use NodeTrait;
 
     protected $table = 'structures';
 
@@ -15,30 +20,4 @@ class Structure extends OrgModel
         'description',
     ];
 
-    protected $hidden = [
-        'id',
-    ];
-
-    /**
-     * @var string[]
-     */
-    protected $appends = [
-        'hash',
-    ];
-
-    /**
-     * @return Relations\HasMany<Position>
-     */
-    public function positions(): Relations\HasMany
-    {
-        return $this->hasMany(Structure\Position::class, 'structure_id');
-    }
-
-    /**
-     * @return Relations\HasMany<Office>
-     */
-    public function offices(): Relations\HasMany
-    {
-        return $this->hasMany(Office::class, 'structure_id');
-    }
 }
