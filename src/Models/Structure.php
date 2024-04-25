@@ -2,17 +2,16 @@
 
 namespace Dicibi\Orgs\Models;
 
-use Dicibi\Orgs\OrgModel;
-use Kalnoy\Nestedset\NodeTrait;
+use Dicibi\Orgs\OrgModelWithNodeTrait;
+use Kalnoy\Nestedset\NestedSet;
 
 /**
+ * @property int $id
  * @property string $name
  * @property string $description
  */
-class Structure extends OrgModel
+class Structure extends OrgModelWithNodeTrait
 {
-    use NodeTrait;
-
     protected $table = 'structures';
 
     protected $fillable = [

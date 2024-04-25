@@ -2,19 +2,24 @@
 
 namespace Dicibi\Orgs\Models\Job;
 
-use Dicibi\Orgs\OrgModel;
-use Kalnoy\Nestedset\NodeTrait;
+use Dicibi\Orgs\OrgModelWithNodeTrait;
 
 /**
  * The main structural job that will be managed in tree.
+ *
+ * @property string $name
+ * @property string $description
+ * @property int $job_family_id
+ * @property int $structure_id
  */
-class Title extends OrgModel
+class Title extends OrgModelWithNodeTrait
 {
-    use NodeTrait;
-
     protected $table = 'job_titles';
 
     protected $fillable = [
         'name',
+        'description',
+        'structure_id',
+        'job_family_id',
     ];
 }

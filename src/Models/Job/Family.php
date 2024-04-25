@@ -7,6 +7,7 @@ use Dicibi\Orgs\OrgModel;
 /**
  * The high-level categorization of job title & position.
  *
+ * @property int $id
  * @property string $name
  * @property int $order
  */

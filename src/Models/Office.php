@@ -2,13 +2,10 @@
 
 namespace Dicibi\Orgs\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Kalnoy\Nestedset\NodeTrait;
+use Dicibi\Orgs\OrgModelWithNodeTrait;
 
-class Office extends Model
+class Office extends OrgModelWithNodeTrait
 {
-    use NodeTrait;
-
     protected $table = 'offices';
 
     protected $fillable = [

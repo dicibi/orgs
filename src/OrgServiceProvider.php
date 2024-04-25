@@ -2,6 +2,13 @@
 
 namespace Dicibi\Orgs;
 
+use Dicibi\Orgs\Resolvers\Actions\JobTitleNestedActions;
+use Dicibi\Orgs\Resolvers\Actions\OfficeNestedActions;
+use Dicibi\Orgs\Resolvers\Actions\StructureNestedActions;
+use Dicibi\Orgs\Resolvers\JobFamilyResolver;
+use Dicibi\Orgs\Resolvers\JobTitleResolver;
+use Dicibi\Orgs\Resolvers\OfficeResolver;
+use Dicibi\Orgs\Resolvers\StructureResolver;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
@@ -13,7 +20,12 @@ class OrgServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/orgs.php', 'orgs');
 
         $this->app->bind('orgs', function (Application $app) {
-            return new OrganizerImpl();
+            return new Organizer(
+                new StructureResolver(new StructureNestedActions()),
+                new JobFamilyResolver(),
+                new JobTitleResolver(new JobTitleNestedActions()),
+                new OfficeResolver(new OfficeNestedActions())
+            );
         });
     }
 
