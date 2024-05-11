@@ -5,11 +5,9 @@ This package following standard of corporate structure. It doesn't include the d
 The basic is to understand the definition of Job Title, Job Function, and Job Structure.
 
 1. Job Title (some refer this as Job Level): a position name within the organization.
-2. Job Function: more detailed description of Job Title for specific person.
+2. Job Function: more detailed **description** of Job Title for specific person.
 3. Job Structure: a hierarchy that consist of Job Titles.
 4. Job Family: a group of job titles with similar nature.
-
-> Because it's f#cking enterprise thingy, so it'll have different terms within each organization. But here, what you need to know is the technical terms in this package, and you, yes you, you need to be aware and compare to ensure if this technical terms will fit or not with your business process (instead of blaming this package).
 
 To understand more, here I give you a little example.
 
