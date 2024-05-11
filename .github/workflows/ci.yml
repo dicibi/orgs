@@ -1,0 +1,25 @@
+name: Workflow for Codecov
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ 8.2, 8.3 ]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+          coverage: xdebug
+      - name: Install dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs
+      - name: Run Test
+        run: composer test
+      - name: Upload to CodeCov.io
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CDCV_KEY }}
+          file: ./build/clover.xml
