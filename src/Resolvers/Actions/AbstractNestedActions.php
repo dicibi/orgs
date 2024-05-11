@@ -2,24 +2,19 @@
 
 namespace Dicibi\Orgs\Resolvers\Actions;
 
-use Dicibi\Orgs\Contracts\Exceptions\NotNestedModelException;
-use Dicibi\Orgs\Contracts\Nested\Actions as NestedActionsContract;
-use Dicibi\Orgs\Contracts\Nested\Model as NestedModel;
-use Dicibi\Orgs\OrgModelWithNodeTrait;
+use Dicibi\Orgs\Contracts\Nested\CanManageNestedSet;
+use Dicibi\Orgs\Contracts\Nested\CanNestedSet;
+use Dicibi\Orgs\OrgNodeModelWithNodeTrait;
 use Illuminate\Support\Facades\DB;
 
-abstract class AbstractNestedActions implements NestedActionsContract
+abstract class AbstractNestedActions implements CanManageNestedSet
 {
     /**
      * @inheritdoc
      * @throws \Throwable
      */
-    public function tree(NestedModel $model, int $depth = -1): NestedModel
+    public function tree(CanNestedSet $model, int $depth = -1): CanNestedSet
     {
-        $this->check($model);
-
-        assert($model instanceof OrgModelWithNodeTrait);
-
         if ($depth === 0) return $model;
 
         $tree = $depth > 0
@@ -36,30 +31,25 @@ abstract class AbstractNestedActions implements NestedActionsContract
      * @throws \Throwable
      */
     public function delete(
-        NestedModel  $model,
+        CanNestedSet  $model,
         bool         $autoAdoption = false,
-        ?NestedModel $ancestor = null,
+        ?CanNestedSet $ancestor = null,
     ): void
     {
-        $this->check($model);
-
-        assert($model instanceof OrgModelWithNodeTrait);
-
         try {
             DB::beginTransaction();
             if ($autoAdoption) {
                 $root = $ancestor
                     ?? $model->parent()->first()
                     ?? $model->ancestors()->first();
-                assert($root instanceof OrgModelWithNodeTrait);
 
                 $model
                     ->children()
-                    ->each(fn(OrgModelWithNodeTrait $child) => $root->appendNode($child));
+                    ->each(fn(OrgNodeModelWithNodeTrait $child) => $root->appendNode($child));
             } else {
                 $model
                     ->children()
-                    ->each(fn(OrgModelWithNodeTrait $child) => $child->saveAsRoot());
+                    ->each(fn(OrgNodeModelWithNodeTrait $child) => $child->saveAsRoot());
             }
 
             $model->delete();
@@ -72,47 +62,23 @@ abstract class AbstractNestedActions implements NestedActionsContract
     /**
      * @inheritdoc
      *
-     * @param NestedModel $model
+     * @param CanNestedSet $model
      * @throws \Throwable
      */
-    public function detach(NestedModel $model): void
+    public function detach(CanNestedSet $model): void
     {
-        $this->check($model);
-
-        assert($model instanceof OrgModelWithNodeTrait);
-
         $model->saveAsRoot();
     }
 
     /**
      * @inheritdoc
      *
-     * @param NestedModel $child
-     * @param NestedModel $parent
+     * @param CanNestedSet $child
+     * @param CanNestedSet $parent
      * @throws \Throwable
      */
-    public function attach(NestedModel $child, NestedModel $parent): void
+    public function attach(CanNestedSet $child, CanNestedSet $parent): void
     {
-        $this->check($child, $parent);
-
-        assert($child instanceof OrgModelWithNodeTrait);
-        assert($parent instanceof OrgModelWithNodeTrait);
-
         $parent->appendNode($child);
     }
-
-    /**
-     * @throws NotNestedModelException|\Throwable
-     */
-    protected function check(NestedModel ...$models): bool
-    {
-        foreach ($models as $model) {
-            throw_if(
-                !($model instanceof OrgModelWithNodeTrait),
-                new NotNestedModelException(($model::class) . ') must implement NestedModel to use NestedActions.')
-            );
-        }
-        return true;
-    }
-
 }

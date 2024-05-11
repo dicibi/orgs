@@ -2,18 +2,15 @@
 
 namespace Dicibi\Orgs;
 
-use Dicibi\Orgs\Contracts\JobFamilyResolver;
-use Dicibi\Orgs\Contracts\JobTitleResolver;
-use Dicibi\Orgs\Contracts\OfficeResolver;
-use Dicibi\Orgs\Contracts\OrganizationResolver as OrganizationResolverContract;
-use Dicibi\Orgs\Contracts\StructureResolver;
+use Dicibi\Orgs\Resolvers\JobTitleResolver;
+use Dicibi\Orgs\Resolvers\OfficeResolver;
+use Dicibi\Orgs\Resolvers\StructureResolver;
 
-readonly class Organizer implements OrganizationResolverContract
+class Organizer
 {
 
     public function __construct(
         private StructureResolver $structureResolver,
-        private JobFamilyResolver $jobFamilyResolver,
         private JobTitleResolver  $titleResolver,
         private OfficeResolver    $officeResolver,
     )
@@ -23,11 +20,6 @@ readonly class Organizer implements OrganizationResolverContract
     public function structures(): StructureResolver
     {
         return $this->structureResolver;
-    }
-
-    public function jobFamilies(): JobFamilyResolver
-    {
-        return $this->jobFamilyResolver;
     }
 
     public function jobTitles(): JobTitleResolver

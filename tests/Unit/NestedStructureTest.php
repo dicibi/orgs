@@ -2,8 +2,8 @@
 
 namespace Dicibi\Orgs\Tests\Unit;
 
+use Dicibi\Orgs\Contracts\Nested\CanNestedSet;
 use Dicibi\Orgs\Models\Structure;
-use Dicibi\Orgs\OrgModelWithNodeTrait;
 use Dicibi\Orgs\Resolvers\Actions\StructureNestedActions;
 use Dicibi\Orgs\Resolvers\StructureResolver;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,53 +23,53 @@ class NestedStructureTest extends TestCase
         $actions = new StructureNestedActions();
         $resolver = new StructureResolver($actions);
 
-        $root = Structure::query()->create([
+        $root = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($root instanceof OrgModelWithNodeTrait);
+        assert($root instanceof CanNestedSet);
 
-        $child1 = Structure::query()->create([
+        $child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1 instanceof OrgModelWithNodeTrait);
+        assert($child1 instanceof CanNestedSet);
 
-        $child1_child1 = Structure::query()->create([
+        $child1_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child1 instanceof OrgModelWithNodeTrait);
+        assert($child1_child1 instanceof CanNestedSet);
 
-        $child1_child1_child1 = Structure::query()->create([
+        $child1_child1_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child1_child1 instanceof OrgModelWithNodeTrait);
+        assert($child1_child1_child1 instanceof CanNestedSet);
 
-        $child1_child2 = Structure::query()->create([
+        $child1_child2 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child2 instanceof OrgModelWithNodeTrait);
+        assert($child1_child2 instanceof CanNestedSet);
 
-        $child2 = Structure::query()->create([
+        $child2 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child2 instanceof OrgModelWithNodeTrait);
+        assert($child2 instanceof CanNestedSet);
 
-        $child3 = Structure::query()->create([
+        $child3 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child3 instanceof OrgModelWithNodeTrait);
+        assert($child3 instanceof CanNestedSet);
 
-        $child3_child1 = Structure::query()->create([
+        $child3_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child3_child1 instanceof OrgModelWithNodeTrait);
+        assert($child3_child1 instanceof CanNestedSet);
 
         $resolver->actions()->attach($child1, $root);
         $resolver->actions()->attach($child1_child1, $child1);
@@ -106,53 +106,53 @@ class NestedStructureTest extends TestCase
         $actions = new StructureNestedActions();
         $resolver = new StructureResolver($actions);
 
-        $root = Structure::query()->create([
+        $root = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($root instanceof OrgModelWithNodeTrait);
+        assert($root instanceof CanNestedSet);
 
-        $child1 = Structure::query()->create([
+        $child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1 instanceof OrgModelWithNodeTrait);
+        assert($child1 instanceof CanNestedSet);
 
-        $child1_child1 = Structure::query()->create([
+        $child1_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child1 instanceof OrgModelWithNodeTrait);
+        assert($child1_child1 instanceof CanNestedSet);
 
-        $child1_child1_child1 = Structure::query()->create([
+        $child1_child1_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child1_child1 instanceof OrgModelWithNodeTrait);
+        assert($child1_child1_child1 instanceof CanNestedSet);
 
-        $child1_child2 = Structure::query()->create([
+        $child1_child2 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child2 instanceof OrgModelWithNodeTrait);
+        assert($child1_child2 instanceof CanNestedSet);
 
-        $child2 = Structure::query()->create([
+        $child2 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child2 instanceof OrgModelWithNodeTrait);
+        assert($child2 instanceof CanNestedSet);
 
-        $child3 = Structure::query()->create([
+        $child3 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child3 instanceof OrgModelWithNodeTrait);
+        assert($child3 instanceof CanNestedSet);
 
-        $child3_child1 = Structure::query()->create([
+        $child3_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child3_child1 instanceof OrgModelWithNodeTrait);
+        assert($child3_child1 instanceof CanNestedSet);
 
         $resolver->actions()->attach($child1, $root);
         $resolver->actions()->attach($child1_child1, $child1);
@@ -180,53 +180,53 @@ class NestedStructureTest extends TestCase
         $actions = new StructureNestedActions();
         $resolver = new StructureResolver($actions);
 
-        $root = Structure::query()->create([
+        $root = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($root instanceof OrgModelWithNodeTrait);
+        assert($root instanceof CanNestedSet);
 
-        $child1 = Structure::query()->create([
+        $child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1 instanceof OrgModelWithNodeTrait);
+        assert($child1 instanceof CanNestedSet);
 
-        $child1_child1 = Structure::query()->create([
+        $child1_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child1 instanceof OrgModelWithNodeTrait);
+        assert($child1_child1 instanceof CanNestedSet);
 
-        $child1_child1_child1 = Structure::query()->create([
+        $child1_child1_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child1_child1 instanceof OrgModelWithNodeTrait);
+        assert($child1_child1_child1 instanceof CanNestedSet);
 
-        $child1_child2 = Structure::query()->create([
+        $child1_child2 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child2 instanceof OrgModelWithNodeTrait);
+        assert($child1_child2 instanceof CanNestedSet);
 
-        $child2 = Structure::query()->create([
+        $child2 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child2 instanceof OrgModelWithNodeTrait);
+        assert($child2 instanceof CanNestedSet);
 
-        $child3 = Structure::query()->create([
+        $child3 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child3 instanceof OrgModelWithNodeTrait);
+        assert($child3 instanceof CanNestedSet);
 
-        $child3_child1 = Structure::query()->create([
+        $child3_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child3_child1 instanceof OrgModelWithNodeTrait);
+        assert($child3_child1 instanceof CanNestedSet);
 
         $resolver->actions()->attach($child1, $root);
         $resolver->actions()->attach($child1_child1, $child1);
@@ -260,23 +260,23 @@ class NestedStructureTest extends TestCase
 
         self::assertFalse($resolver->actions()->hasOrphan());
 
-        $root = Structure::query()->create([
+        $root = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($root instanceof OrgModelWithNodeTrait);
+        assert($root instanceof CanNestedSet);
 
-        $child1 = Structure::query()->create([
+        $child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1 instanceof OrgModelWithNodeTrait);
+        assert($child1 instanceof CanNestedSet);
 
-        $child1_child1 = Structure::query()->create([
+        $child1_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child1 instanceof OrgModelWithNodeTrait);
+        assert($child1_child1 instanceof CanNestedSet);
 
         self::assertTrue($resolver->actions()->hasOrphan());
     }
@@ -288,23 +288,23 @@ class NestedStructureTest extends TestCase
 
         self::assertFalse($resolver->actions()->hasOrphan());
 
-        $root = Structure::query()->create([
+        $root = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($root instanceof OrgModelWithNodeTrait);
+        assert($root instanceof CanNestedSet);
 
-        $child1 = Structure::query()->create([
+        $child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1 instanceof OrgModelWithNodeTrait);
+        assert($child1 instanceof CanNestedSet);
 
-        $child1_child1 = Structure::query()->create([
+        $child1_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child1 instanceof OrgModelWithNodeTrait);
+        assert($child1_child1 instanceof CanNestedSet);
 
         $resolver->actions()->attach($child1, $root);
         $resolver->actions()->attach($child1_child1, $child1);
@@ -320,23 +320,23 @@ class NestedStructureTest extends TestCase
 
         self::assertFalse($resolver->actions()->hasOrphan());
 
-        $root = Structure::query()->create([
+        $root = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($root instanceof OrgModelWithNodeTrait);
+        assert($root instanceof CanNestedSet);
 
-        $child1 = Structure::query()->create([
+        $child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1 instanceof OrgModelWithNodeTrait);
+        assert($child1 instanceof CanNestedSet);
 
-        $child1_child1 = Structure::query()->create([
+        $child1_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child1 instanceof OrgModelWithNodeTrait);
+        assert($child1_child1 instanceof CanNestedSet);
 
         $resolver->actions()->attach($child1, $root);
         $resolver->actions()->attach($child1_child1, $child1);
@@ -359,53 +359,53 @@ class NestedStructureTest extends TestCase
         $actions = new StructureNestedActions();
         $resolver = new StructureResolver($actions);
 
-        $root = Structure::query()->create([
+        $root = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($root instanceof OrgModelWithNodeTrait);
+        assert($root instanceof CanNestedSet);
 
-        $child1 = Structure::query()->create([
+        $child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1 instanceof OrgModelWithNodeTrait);
+        assert($child1 instanceof CanNestedSet);
 
-        $child1_child1 = Structure::query()->create([
+        $child1_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child1 instanceof OrgModelWithNodeTrait);
+        assert($child1_child1 instanceof CanNestedSet);
 
-        $child1_child1_child1 = Structure::query()->create([
+        $child1_child1_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child1_child1 instanceof OrgModelWithNodeTrait);
+        assert($child1_child1_child1 instanceof CanNestedSet);
 
-        $child1_child2 = Structure::query()->create([
+        $child1_child2 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child1_child2 instanceof OrgModelWithNodeTrait);
+        assert($child1_child2 instanceof CanNestedSet);
 
-        $child2 = Structure::query()->create([
+        $child2 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child2 instanceof OrgModelWithNodeTrait);
+        assert($child2 instanceof CanNestedSet);
 
-        $child3 = Structure::query()->create([
+        $child3 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child3 instanceof OrgModelWithNodeTrait);
+        assert($child3 instanceof CanNestedSet);
 
-        $child3_child1 = Structure::query()->create([
+        $child3_child1 = Structure::query()->forceCreate([
             'name' => fake()->name,
             'description' => fake()->words(asText: true),
         ]);
-        assert($child3_child1 instanceof OrgModelWithNodeTrait);
+        assert($child3_child1 instanceof CanNestedSet);
 
         $resolver->actions()->attach($child1, $root);
         $resolver->actions()->attach($child1_child1, $child1);
@@ -416,12 +416,12 @@ class NestedStructureTest extends TestCase
         $resolver->actions()->attach($child3_child1, $child3);
 
         $child1_tree = $resolver->actions()->tree($child1);
-        assert($child1_tree instanceof OrgModelWithNodeTrait);
+        assert($child1_tree instanceof CanNestedSet);
 
         self::assertEquals(2, $child1_tree->children->count());
 
         $root_tree = $resolver->actions()->tree($root);
-        assert($root_tree instanceof OrgModelWithNodeTrait);
+        assert($root_tree instanceof CanNestedSet);
 
         self::assertEquals(3, $root_tree->children->count()); // root's children
         self::assertEquals(2, $root_tree->children->first()->children->count()); // child1's children

@@ -8,6 +8,5 @@ return [
     'user' => env('ORG_MODEL_USER', \App\Models\User::class),
 
     'job_family' => null,
-    'job_clan' => null,
-    'office' => \Dicibi\Orgs\Models\Office::class,
+    'job_clan' => null
 ];

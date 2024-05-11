@@ -3,18 +3,19 @@
 namespace Dicibi\Orgs\Resolvers;
 
 use Dicibi\Orgs\Concerns\HasNestedActions;
-use Dicibi\Orgs\Contracts\StructureResolver as StructureRepositoryContract;
+use Dicibi\Orgs\Contracts\CanCreateStructure;
+use Dicibi\Orgs\Contracts\Nested\CanNestedSet;
 use Dicibi\Orgs\Models\Structure;
 
-class StructureResolver implements StructureRepositoryContract
+class StructureResolver implements CanCreateStructure
 {
     use HasNestedActions;
 
     public function create(
-        string     $name,
-        ?string    $description = null,
-        ?Structure $attachTo = null,
-    ): Structure
+        string                      $name,
+        ?string                     $description = null,
+        CanNestedSet|null $attachTo = null,
+    ): CanNestedSet
     {
         $newStructure = new Structure();
         $newStructure->name = $name;

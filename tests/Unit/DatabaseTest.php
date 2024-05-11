@@ -13,35 +13,9 @@ class DatabaseTest extends TestCase
     use WithWorkbench;
     use RefreshDatabase;
 
-    public function test_job_families_table()
-    {
-        Job\Family::query()->create([
-            'name' => 'Lorem ipsum',
-            'order' => 1
-        ]);
-        self::assertEquals(1, Job\Family::query()->count());
-
-        $family = Job\Family::query()->first();
-        assert($family instanceof Job\Family);
-
-        self::assertEquals('Lorem ipsum', $family->name);
-        self::assertEquals(1, $family->order);
-
-        $family->update([
-            'name' => 'Lorem',
-            'order' => 2
-        ]);
-        $family->fresh();
-        self::assertEquals('Lorem', $family->name);
-        self::assertEquals(2, $family->order);
-
-        $family->delete();
-        self::assertEquals(0, Job\Family::query()->count());
-    }
-
     public function test_structures_table()
     {
-        Structure::query()->create([
+        Structure::query()->forceCreate([
             'name' => 'Lorem ipsum',
             'description' => 'describe'
         ]);
@@ -53,11 +27,14 @@ class DatabaseTest extends TestCase
         self::assertEquals('Lorem ipsum', $structure->name);
         self::assertEquals('describe', $structure->description);
 
-        $structure->update([
+        $structure->forceFill([
             'name' => 'Lorem',
             'description' => 'update desc'
         ]);
+        $structure->save();
+
         $structure->fresh();
+
         self::assertEquals('Lorem', $structure->name);
         self::assertEquals('update desc', $structure->description);
 
@@ -67,7 +44,7 @@ class DatabaseTest extends TestCase
 
     public function test_structures_table_nested()
     {
-        Structure::query()->create([
+        Structure::query()->forceCreate([
             'name' => 'Lorem ipsum',
             'description' => 'describe'
         ]);
@@ -79,7 +56,7 @@ class DatabaseTest extends TestCase
         self::assertEquals('Lorem ipsum', $structure->name);
         self::assertEquals('describe', $structure->description);
 
-        $child = Structure::query()->create([
+        $child = Structure::query()->forceCreate([
             'name' => 'Lorem child',
             'description' => 'another'
         ]);
@@ -97,7 +74,7 @@ class DatabaseTest extends TestCase
         self::assertTrue($child->isDescendantOf($structure));
 
         for ($i = 0; $i < 5; $i++) {
-            $descendant = Structure::query()->create([
+            $descendant = Structure::query()->forceCreate([
                 'name' => 'New child',
                 'description' => 'another'
             ]);
@@ -117,22 +94,15 @@ class DatabaseTest extends TestCase
 
     public function test_titles_table()
     {
-        $jobFamily = Job\Family::query()->create([
-            'name' => 'Job Family A',
-            'order' => 1
-        ]);
-        assert($jobFamily instanceof Job\Family);
-
-        $structure = Structure::query()->create([
+        $structure = Structure::query()->forceCreate([
             'name' => 'Structure A',
             'description' => 'lorem ipsum'
         ]);
         assert($structure instanceof Structure);
 
-        Job\Title::query()->create([
+        Job\Title::query()->forceCreate([
             'name' => 'Lorem ipsum',
             'description' => 'describe',
-            'job_family_id' => $jobFamily->id,
             'structure_id' => $structure->id,
         ]);
         self::assertEquals(1, Job\Title::query()->count());
@@ -142,7 +112,6 @@ class DatabaseTest extends TestCase
 
         self::assertEquals('Lorem ipsum', $title->name);
         self::assertEquals('describe', $title->description);
-        self::assertEquals($jobFamily->id, $title->job_family_id);
         self::assertEquals($structure->id, $title->structure_id);
     }
 }

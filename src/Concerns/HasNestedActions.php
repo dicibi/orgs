@@ -2,7 +2,7 @@
 
 namespace Dicibi\Orgs\Concerns;
 
-use Dicibi\Orgs\Contracts\Nested\Actions as NestedActions;
+use Dicibi\Orgs\Contracts\Nested\CanManageNestedSet as NestedActions;
 
 trait HasNestedActions
 {

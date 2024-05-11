@@ -2,30 +2,29 @@
 
 namespace Dicibi\Orgs\Contracts\Nested;
 
-use Dicibi\Orgs\Contracts\Nested\Model as NestedModel;
 use Illuminate\Contracts\Database\Query\Builder;
 
-interface Actions
+interface CanManageNestedSet
 {
 
     /**
      * This will not return orphan structures.
      *
-     * If NestedModel model passed, it'll search into
+     * If CanNestedSet model passed, it'll search into
      * its children.
      *
      * If $depth is -1, it'll return until the
      * deepest structure. When $depth is 0, it'll
      * return only itself.
      *
-     * @param Model $model
+     * @param CanNestedSet $model
      * @param int $depth
-     * @return NestedModel
+     * @return CanNestedSet
      */
     public function tree(
-        NestedModel $model,
+        CanNestedSet $model,
         int          $depth = -1
-    ): NestedModel;
+    ): CanNestedSet;
 
     /**
      * Check if there's any orphans.
@@ -42,45 +41,45 @@ interface Actions
     public function orphans(): Builder;
 
     /**
-     * Detach given NestedModel from its parent.
+     * Detach given CanNestedSet from its parent.
      *
-     * @param NestedModel $model
+     * @param CanNestedSet $model
      * @return void
      */
     public function detach(
-        NestedModel $model
+        CanNestedSet $model
     ): void;
 
     /**
-     * Attach given NestedModel child to its parent.
+     * Attach given CanNestedSet child to its parent.
      *
-     * @param NestedModel $parent
-     * @param NestedModel $child
+     * @param CanNestedSet $parent
+     * @param CanNestedSet $child
      * @return void
      */
     public function attach(
-        NestedModel $child,
-        NestedModel $parent,
+        CanNestedSet $child,
+        CanNestedSet $parent,
     ): void;
 
     /**
-     * Safely delete given NestedModel.
+     * Safely delete given CanNestedSet.
      *
      * If $autoAdoption is true, the children will not be ignored,
-     * they will auto assigned to their ancestor, the parent of deleted NestedModel.
+     * they will auto assigned to their ancestor, the parent of deleted CanNestedSet.
      *
      * If $ancestor is null, it'll save the children to default ancestor. If $ancestor is available,
      * the children will be assigned to $ancestor instead the default ancestor.
      *
-     * @param NestedModel $model
+     * @param CanNestedSet $model
      * @param bool $autoAdoption
-     * @param NestedModel|null $ancestor
+     * @param CanNestedSet|null $ancestor
      * @return void
      */
     public function delete(
-        NestedModel  $model,
+        CanNestedSet  $model,
         bool         $autoAdoption = false,
-        ?NestedModel $ancestor = null
+        ?CanNestedSet $ancestor = null
     ): void;
 
     /**

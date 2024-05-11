@@ -2,9 +2,10 @@
 
 namespace Dicibi\Orgs\Contracts;
 
+use Dicibi\Orgs\Contracts\Nested\CanNestedSet;
 use Dicibi\Orgs\Models\Structure;
 
-interface StructureResolver
+interface CanCreateStructure
 {
     /**
      * Create new structure and append it as child of
@@ -19,7 +20,6 @@ interface StructureResolver
     public function create(
         string     $name,
         ?string    $description = null,
-        ?Structure $attachTo = null,
-    ): Structure;
-
+        CanNestedSet $attachTo = null,
+    ): CanNestedSet;
 }

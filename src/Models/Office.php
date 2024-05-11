@@ -2,13 +2,10 @@
 
 namespace Dicibi\Orgs\Models;
 
-use Dicibi\Orgs\OrgModelWithNodeTrait;
+use Dicibi\Orgs\Contracts\Model\OfficeContract;
+use Dicibi\Orgs\OrgNodeModelWithNodeTrait;
 
-class Office extends OrgModelWithNodeTrait
+class Office extends OrgNodeModelWithNodeTrait implements OfficeContract
 {
     protected $table = 'offices';
-
-    protected $fillable = [
-        'name',
-    ];
 }
