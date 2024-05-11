@@ -1,14 +1,14 @@
 <?php
 
-namespace Dicibi\Orgs\Resolvers\Actions;
+namespace Dicibi\Orgs\Concerns;
 
-use Dicibi\Orgs\Contracts\Nested\CanManageNestedSet;
 use Dicibi\Orgs\Contracts\Nested\CanNestedSet;
 use Dicibi\Orgs\OrgNodeModelWithNodeTrait;
 use Illuminate\Support\Facades\DB;
 
-abstract class AbstractNestedActions implements CanManageNestedSet
+trait HasNestedAction
 {
+
     /**
      * @inheritdoc
      * @throws \Throwable

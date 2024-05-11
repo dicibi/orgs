@@ -4,7 +4,6 @@ namespace Dicibi\Orgs\Tests\Unit;
 
 use Dicibi\Orgs\Contracts\Nested\CanNestedSet;
 use Dicibi\Orgs\Models\Structure;
-use Dicibi\Orgs\Resolvers\Actions\StructureNestedActions;
 use Dicibi\Orgs\Resolvers\StructureResolver;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Orchestra\Testbench\Concerns\WithWorkbench;
@@ -20,8 +19,7 @@ class NestedStructureTest extends TestCase
      */
     public function test_attach_action()
     {
-        $actions = new StructureNestedActions();
-        $resolver = new StructureResolver($actions);
+        $resolver = new StructureResolver();
 
         $root = Structure::query()->forceCreate([
             'name' => fake()->name,
@@ -71,13 +69,13 @@ class NestedStructureTest extends TestCase
         ]);
         assert($child3_child1 instanceof CanNestedSet);
 
-        $resolver->actions()->attach($child1, $root);
-        $resolver->actions()->attach($child1_child1, $child1);
-        $resolver->actions()->attach($child1_child2, $child1);
-        $resolver->actions()->attach($child1_child1_child1, $child1_child1);
-        $resolver->actions()->attach($child2, $root);
-        $resolver->actions()->attach($child3, $root);
-        $resolver->actions()->attach($child3_child1, $child3);
+        $resolver->attach($child1, $root);
+        $resolver->attach($child1_child1, $child1);
+        $resolver->attach($child1_child2, $child1);
+        $resolver->attach($child1_child1_child1, $child1_child1);
+        $resolver->attach($child2, $root);
+        $resolver->attach($child3, $root);
+        $resolver->attach($child3_child1, $child3);
 
         self::assertTrue($root->isAncestorOf($child1));
         self::assertTrue($root->isAncestorOf($child2));
@@ -103,8 +101,7 @@ class NestedStructureTest extends TestCase
      */
     public function test_delete_action_without_auto_adoption()
     {
-        $actions = new StructureNestedActions();
-        $resolver = new StructureResolver($actions);
+        $resolver = new StructureResolver();
 
         $root = Structure::query()->forceCreate([
             'name' => fake()->name,
@@ -154,17 +151,17 @@ class NestedStructureTest extends TestCase
         ]);
         assert($child3_child1 instanceof CanNestedSet);
 
-        $resolver->actions()->attach($child1, $root);
-        $resolver->actions()->attach($child1_child1, $child1);
-        $resolver->actions()->attach($child1_child2, $child1);
-        $resolver->actions()->attach($child1_child1_child1, $child1_child1);
-        $resolver->actions()->attach($child2, $root);
-        $resolver->actions()->attach($child3, $root);
-        $resolver->actions()->attach($child3_child1, $child3);
+        $resolver->attach($child1, $root);
+        $resolver->attach($child1_child1, $child1);
+        $resolver->attach($child1_child2, $child1);
+        $resolver->attach($child1_child1_child1, $child1_child1);
+        $resolver->attach($child2, $root);
+        $resolver->attach($child3, $root);
+        $resolver->attach($child3_child1, $child3);
 
-        self::assertEquals(1, $resolver->actions()->orphans()->count()); // only root is orphan
-        $resolver->actions()->delete($child1);
-        self::assertEquals(3, $resolver->actions()->orphans()->count()); // $child1's children now orphan
+        self::assertEquals(1, $resolver->orphans()->count()); // only root is orphan
+        $resolver->delete($child1);
+        self::assertEquals(3, $resolver->orphans()->count()); // $child1's children now orphan
 
         $root = $root->fresh();
 
@@ -177,8 +174,7 @@ class NestedStructureTest extends TestCase
      */
     public function test_delete_action_with_auto_adoption()
     {
-        $actions = new StructureNestedActions();
-        $resolver = new StructureResolver($actions);
+        $resolver = new StructureResolver();
 
         $root = Structure::query()->forceCreate([
             'name' => fake()->name,
@@ -228,26 +224,26 @@ class NestedStructureTest extends TestCase
         ]);
         assert($child3_child1 instanceof CanNestedSet);
 
-        $resolver->actions()->attach($child1, $root);
-        $resolver->actions()->attach($child1_child1, $child1);
-        $resolver->actions()->attach($child1_child2, $child1);
-        $resolver->actions()->attach($child1_child1_child1, $child1_child1);
-        $resolver->actions()->attach($child2, $root);
-        $resolver->actions()->attach($child3, $root);
-        $resolver->actions()->attach($child3_child1, $child3);
+        $resolver->attach($child1, $root);
+        $resolver->attach($child1_child1, $child1);
+        $resolver->attach($child1_child2, $child1);
+        $resolver->attach($child1_child1_child1, $child1_child1);
+        $resolver->attach($child2, $root);
+        $resolver->attach($child3, $root);
+        $resolver->attach($child3_child1, $child3);
 
-        self::assertEquals(1, $resolver->actions()->orphans()->count()); // only root is orphan
-        $resolver->actions()->delete($child1, true);
-        self::assertEquals(1, $resolver->actions()->orphans()->count()); // root is still an orphan
+        self::assertEquals(1, $resolver->orphans()->count()); // only root is orphan
+        $resolver->delete($child1, true);
+        self::assertEquals(1, $resolver->orphans()->count()); // root is still an orphan
 
         self::assertEquals(4, $root->children()->count());
         self::assertEquals(6, $root->descendants()->count());
 
         # ----------------------------------------------------------------------------------------------
 
-        self::assertEquals(1, $resolver->actions()->orphans()->count()); // only root is orphan
-        $resolver->actions()->delete($child3, true);
-        self::assertEquals(1, $resolver->actions()->orphans()->count()); // root is still an orphan
+        self::assertEquals(1, $resolver->orphans()->count()); // only root is orphan
+        $resolver->delete($child3, true);
+        self::assertEquals(1, $resolver->orphans()->count()); // root is still an orphan
 
         self::assertEquals(4, $root->children()->count());
         self::assertEquals(5, $root->descendants()->count());
@@ -255,10 +251,9 @@ class NestedStructureTest extends TestCase
 
     public function test_orphans_check()
     {
-        $actions = new StructureNestedActions();
-        $resolver = new StructureResolver($actions);
+        $resolver = new StructureResolver();
 
-        self::assertFalse($resolver->actions()->hasOrphan());
+        self::assertFalse($resolver->hasOrphan());
 
         $root = Structure::query()->forceCreate([
             'name' => fake()->name,
@@ -278,15 +273,14 @@ class NestedStructureTest extends TestCase
         ]);
         assert($child1_child1 instanceof CanNestedSet);
 
-        self::assertTrue($resolver->actions()->hasOrphan());
+        self::assertTrue($resolver->hasOrphan());
     }
 
     public function test_orphans_query()
     {
-        $actions = new StructureNestedActions();
-        $resolver = new StructureResolver($actions);
+        $resolver = new StructureResolver();
 
-        self::assertFalse($resolver->actions()->hasOrphan());
+        self::assertFalse($resolver->hasOrphan());
 
         $root = Structure::query()->forceCreate([
             'name' => fake()->name,
@@ -306,19 +300,18 @@ class NestedStructureTest extends TestCase
         ]);
         assert($child1_child1 instanceof CanNestedSet);
 
-        $resolver->actions()->attach($child1, $root);
-        $resolver->actions()->attach($child1_child1, $child1);
+        $resolver->attach($child1, $root);
+        $resolver->attach($child1_child1, $child1);
 
-        self::assertTrue($resolver->actions()->orphans()->exists());
-        self::assertEquals(1, $resolver->actions()->orphans()->count());
+        self::assertTrue($resolver->orphans()->exists());
+        self::assertEquals(1, $resolver->orphans()->count());
     }
 
     public function test_fixtree()
     {
-        $actions = new StructureNestedActions();
-        $resolver = new StructureResolver($actions, $actions);
+        $resolver = new StructureResolver();
 
-        self::assertFalse($resolver->actions()->hasOrphan());
+        self::assertFalse($resolver->hasOrphan());
 
         $root = Structure::query()->forceCreate([
             'name' => fake()->name,
@@ -338,8 +331,8 @@ class NestedStructureTest extends TestCase
         ]);
         assert($child1_child1 instanceof CanNestedSet);
 
-        $resolver->actions()->attach($child1, $root);
-        $resolver->actions()->attach($child1_child1, $child1);
+        $resolver->attach($child1, $root);
+        $resolver->attach($child1_child1, $child1);
 
         $child1_child1->setLft($root->getLft());
         $child1_child1->save();
@@ -349,15 +342,14 @@ class NestedStructureTest extends TestCase
 
         self::assertTrue(Structure::isBroken());
 
-        $resolver->actions()->fixTree();
+        $resolver->fixTree();
 
         self::assertFalse(Structure::isBroken());
     }
 
     public function test_tree()
     {
-        $actions = new StructureNestedActions();
-        $resolver = new StructureResolver($actions);
+        $resolver = new StructureResolver();
 
         $root = Structure::query()->forceCreate([
             'name' => fake()->name,
@@ -407,38 +399,24 @@ class NestedStructureTest extends TestCase
         ]);
         assert($child3_child1 instanceof CanNestedSet);
 
-        $resolver->actions()->attach($child1, $root);
-        $resolver->actions()->attach($child1_child1, $child1);
-        $resolver->actions()->attach($child1_child2, $child1);
-        $resolver->actions()->attach($child1_child1_child1, $child1_child1);
-        $resolver->actions()->attach($child2, $root);
-        $resolver->actions()->attach($child3, $root);
-        $resolver->actions()->attach($child3_child1, $child3);
+        $resolver->attach($child1, $root);
+        $resolver->attach($child1_child1, $child1);
+        $resolver->attach($child1_child2, $child1);
+        $resolver->attach($child1_child1_child1, $child1_child1);
+        $resolver->attach($child2, $root);
+        $resolver->attach($child3, $root);
+        $resolver->attach($child3_child1, $child3);
 
-        $child1_tree = $resolver->actions()->tree($child1);
+        $child1_tree = $resolver->tree($child1);
         assert($child1_tree instanceof CanNestedSet);
 
-        self::assertEquals(2, $child1_tree->children->count());
+        self::assertEquals(2, $child1_tree->children()->count());
 
-        $root_tree = $resolver->actions()->tree($root);
+        $root_tree = $resolver->tree($root);
         assert($root_tree instanceof CanNestedSet);
 
-        self::assertEquals(3, $root_tree->children->count()); // root's children
-        self::assertEquals(2, $root_tree->children->first()->children->count()); // child1's children
-        self::assertEquals(1, $root_tree->children->first()->children->first()->children->count()); // child1->child1's children
-    }
-
-    public function test_actions_dependency()
-    {
-        $oldActions = new StructureNestedActions();
-        $resolver = new StructureResolver($oldActions);
-
-        self::assertSame($resolver->actions(), $oldActions);
-
-        $newActions = new StructureNestedActions();
-        $resolver->setNestedActions($newActions);
-
-        self::assertSame($resolver->actions(), $newActions);
-        self::assertNotSame($resolver->actions(), $oldActions);
+        self::assertEquals(3, $root_tree->children()->count()); // root's children
+        self::assertEquals(2, $root_tree->children()->first()->children()->count()); // child1's children
+        self::assertEquals(1, $root_tree->children()->first()->children()->first()->children()->count()); // child1->child1's children
     }
 }

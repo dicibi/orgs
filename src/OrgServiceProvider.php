@@ -5,9 +5,6 @@ namespace Dicibi\Orgs;
 use Dicibi\Orgs\Contracts\Model\JobClanContract;
 use Dicibi\Orgs\Contracts\Model\JobFamilyContract;
 use Dicibi\Orgs\Contracts\Model\OfficeContract;
-use Dicibi\Orgs\Resolvers\Actions\JobTitleNestedActions;
-use Dicibi\Orgs\Resolvers\Actions\OfficeNestedActions;
-use Dicibi\Orgs\Resolvers\Actions\StructureNestedActions;
 use Dicibi\Orgs\Resolvers\JobTitleResolver;
 use Dicibi\Orgs\Resolvers\OfficeResolver;
 use Dicibi\Orgs\Resolvers\StructureResolver;
@@ -39,9 +36,9 @@ class OrgServiceProvider extends ServiceProvider
 
         $this->app->bind('orgs', function (Application $app) {
             return new Organizer(
-                new StructureResolver(new StructureNestedActions()),
-                new JobTitleResolver(new JobTitleNestedActions()),
-                new OfficeResolver(new OfficeNestedActions())
+                new StructureResolver(),
+                new JobTitleResolver(),
+                new OfficeResolver()
             );
         });
     }

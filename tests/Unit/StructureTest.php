@@ -35,7 +35,7 @@ class StructureTest extends TestCase
 
         $this->assertDatabaseCount($branchStructure, 2);
 
-        $parent = $structure->actions()->tree($centralStructure);
+        $parent = $structure->tree($centralStructure);
 
         $this->assertEquals(1, $parent->children()->count());
 

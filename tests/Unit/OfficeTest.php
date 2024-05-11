@@ -7,4 +7,9 @@ use Orchestra\Testbench\TestCase;
 class OfficeTest extends TestCase
 {
     // TODO office tests
+
+    function test_example()
+    {
+        $this->assertTrue(true);
+    }
 }
