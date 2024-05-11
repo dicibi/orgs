@@ -21,5 +21,5 @@ jobs:
       - name: Upload to CodeCov.io
         uses: codecov/codecov-action@v4
         with:
-          token: ${{ secrets.CDCV_KEY }}
+          token: ${{ secrets.CODECOV_TOKEN }}
           file: ./build/clover.xml
