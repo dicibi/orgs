@@ -20,10 +20,12 @@ trait HasEmployment
 
     public function assignPosition(Position $position): Employment
     {
-        /** @var Employment */
-        return $this->employments()->forceCreate([
-            'position_id' => $position->id
-        ]);
+        $employment = new Employment;
+        $employment->employable = $this;
+        $employment->position = $position;
+        $employment->save();
+
+        return $employment;
     }
 
     /**

@@ -2,11 +2,8 @@
 
 namespace Dicibi\Orgs\Models\Pivot;
 
-use Dicibi\Orgs\Models\Job\Title;
-use Dicibi\Orgs\Models\Office;
 use Dicibi\Orgs\OrgPivot;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
@@ -15,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $note
  * @property int $employable_id
  * @property string $employable_type
+ * @property mixed $employable
  */
 class Employment extends OrgPivot
 {
@@ -25,19 +23,17 @@ class Employment extends OrgPivot
         $this->attributes['position_id'] = $position->id;
     }
 
+    public function setEmployableAttribute(mixed $employable)
+    {
+        assert(method_exists($employable, 'employments'));
+
+        $this->attributes['employable_id'] = $employable->id;
+        $this->attributes['employable_type'] = $employable::class;
+    }
+
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
-    }
-
-    public function title(): HasOneThrough
-    {
-        return $this->hasOneThrough(Title::class, Position::class);
-    }
-
-    public function office(): HasOneThrough
-    {
-        return $this->hasOneThrough(Office::class, Position::class);
     }
 
     public function employable(): MorphTo
