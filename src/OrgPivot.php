@@ -9,7 +9,9 @@ class OrgPivot extends Pivot
 
     public function getTable(): string
     {
-        return config('orgs.prefix') . parent::getTable();
+        return str_starts_with(parent::getTable(), config('orgs.prefix'))
+            ? parent::getTable()
+            : config('orgs.prefix') . parent::getTable();
     }
 
 }

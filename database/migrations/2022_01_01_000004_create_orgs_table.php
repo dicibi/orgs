@@ -2,6 +2,7 @@
 
 use Dicibi\Orgs\Models\Job\Title;
 use Dicibi\Orgs\Models\Office;
+use Dicibi\Orgs\Models\Pivot\Employment;
 use Dicibi\Orgs\Models\Pivot\Position;
 use Dicibi\Orgs\Models\Structure;
 use Illuminate\Database\Migrations\Migration;
@@ -81,6 +82,8 @@ return new class() extends Migration {
 
             NestedSet::columns($table);
 
+            $table->foreignId('structure_id')->nullable()->constrained((new Structure())->getTable());
+
             $table->string('name');
             $table->text('address')->nullable();
 
@@ -88,7 +91,7 @@ return new class() extends Migration {
         });
 
         Schema::create((new Position())->getTable(), static function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->ulid('id')->primary();
 
             NestedSet::columns($table);
 
@@ -100,12 +103,26 @@ return new class() extends Migration {
             $table->text('job_function')->nullable();
             $table->text('job_description')->nullable();
             $table->text('note')->nullable();
+
+            $table->timestamps();
+        });
+
+        Schema::create((new Employment())->getTable(), static function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('position_id')->constrained((new Position())->getTable());
+
+            $table->morphs('employable');
+
+            $table->text('note')->nullable();
+
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
+        Schema::dropIfExists((new Employment())->getTable());
         Schema::dropIfExists((new Position())->getTable());
         Schema::dropIfExists((new Office())->getTable());
         Schema::dropIfExists((new Title())->getTable());

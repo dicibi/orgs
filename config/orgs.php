@@ -9,5 +9,4 @@ return [
 
     'job_family' => null,
     'job_clan' => null,
-    'office' => \Dicibi\Orgs\Models\Office::class,
 ];

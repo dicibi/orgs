@@ -20,6 +20,6 @@ interface CanCreateStructure
     public function create(
         string     $name,
         ?string    $description = null,
-        CanNestedSet $attachTo = null,
+        ?CanNestedSet $attachTo = null,
     ): CanNestedSet;
 }

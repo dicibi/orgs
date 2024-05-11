@@ -10,7 +10,6 @@
     <php>
         <env name="DB_CONNECTION" value="sqlite"/>
         <env name="ORG_TABLE_PREFIX" value="orgs_"/>
-        <env name="ORG_MODEL_USER" value="Dicibi\Orgs\Tests\Mock\User"/>
     </php>
     <source>
         <include>
