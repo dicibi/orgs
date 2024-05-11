@@ -1,41 +1,190 @@
 # The Orgs.
 
-This package following standard of corporate structure. It doesn't include the default structure or names, you define it yourself. This package provide only the functionalities to organize, manage, and doing business process related to job structure.
-
-The basic is to understand the definition of Job Title, Job Function, and Job Structure.
-
-1. Job Title (some refer this as Job Level): a position name within the organization.
-2. Job Function: more detailed **description** of Job Title for specific person.
-3. Job Structure: a hierarchy that consist of Job Titles.
-4. Job Family: a group of job titles with similar nature.
-
-To understand more, here I give you a little example.
-
-> Job Title: usually used by external actors to understand your position in general. Let's say that the company define you as 'Senior Software Engineer', but it's not specific and not define what you actually do. What people actually know is, 'Senior Software Engineer' is above the 'Mid-Software Engineer' and 'Software Engineer' in your company.
-
-> Job Function: define your actual day-to-day job internally. Your Job Title is 'Senior Software Engineer' and your Job Function is 'Support & Operation Engineer' or something like 'Projects & Development' and the actual Job Function that describe you is 'Senior Software Engineer - Projects & Development' (Job Title + Job Function).
-
-I'll give you an example of another use case in non-tech corporate.
-
-> Job Title: let's say you're a 'Senior Analyst' in the company. The term 'analyst' is vague and not define the actual description of your day-to-day job. But it's define your 'structure' and 'responsibilities' in general compared to a 'Junior Analyst'.
-
-> Job Function: the actual function for your position is 'Legal & Dispute Analyst'. With this term, it's now clear that your job is to do something related to 'Legal & Dispute', and you're a senior in that position. It's define your Job Position is 'Senior Analyst at Legal & Dispute' within the corporation.
-
-Now you understand the basic use case of Job Title and Function. Now what is a Job Structure?
-
-> Job Structure: it's the hierarchy (or structure) of Job Title. Job Function have no hierarchy, the hierarchy of Job Function usually defined by the Job Title.
-
-> In example above, we implicitly understand that 'Senior Software Engineer - Project & Development' is a position higher than a 'Mid-Software Engineer' just from their Job Title. It's unnecessary to define structure of Job Position, because the Job Title itself already define the relation.
-
-Okay now, what about the Job Family?
-
-> Job Family: a group of job titles with similar nature. What it means with similar nature? It means I cannot answer that, it's up to the Human Resource People to define the categories, but let's take a concrete example what it should be below.
-
-> Example of Job Family are Marketing, Information & Technology, Human Resource, Executive Management, Legal. As you can see in example before, we take a 'Senior Software Engineer' and 'Senior Analyst', which each of it are within the 'Information & Technology' and another one to 'Legal'.
+This package following standard of corporate structure. It doesn't include the default structure or names, you define it
+yourself. This package provide only the functionalities to organize, manage, and doing business process related to job
+structure.
 
 ---
 
-What we want to achieve with this package are:
+## Main Components
 
-1. Ability to manage organization-level structure
-2. Ability to manage office-level structure
+The orgs. package contains 3 main organizer components.
+
+1. Structure(s)
+2. Job Title(s)
+3. Office(s)
+
+Each components have nested-set implementation.
+
+## How to Use
+
+Install it via `composer`.
+
+```
+composer require dicibi/orgs
+```
+
+Use via `app('orgs')`.
+
+```php
+app('orgs')->structures(); // Dicibi\Orgs\Resolvers\StructureResolver
+app('orgs')->offices(); // Dicibi\Orgs\Resolvers\OfficeResolver
+app('orgs')->jobTitles(); // Dicibi\Orgs\Resolvers\JobTitleResolver
+```
+
+Or use `orgs` via service binding.
+
+```php
+use Dicibi\Orgs\Organizer;
+
+function (Organizer $organizer) {
+    $organizer->structures(); // Dicibi\Orgs\Resolvers\StructureResolver
+    $organizer->offices(); // Dicibi\Orgs\Resolvers\OfficeResolver
+    $organizer->jobTitles(); // Dicibi\Orgs\Resolvers\JobTitleResolver
+}
+```
+
+Define where the employment will be attached to. It's common to attach it to `users`.
+
+```php
+
+class User extends Model {
+    
+    use HasEmployment; // add ability to this model have Job Position (historical)
+    
+}
+
+```
+
+### Use Case - a simple open position
+
+Assign user to Position.
+
+```php
+// by inherit this trait
+use Dicibi\Orgs\Concerns\HasEmployment;
+
+// it's as simple as to call `assignPosition(position)` to assign a Position
+auth()->user()->assignPosition($position);
+
+// to get historically employed/assigned positions, call employments().
+// @return QueryBuilder<Dicibi\Orgs\Models\Pivot\Position>
+auth()->user()->employments();
+
+// to get current/active position (latest).
+// @return Dicibi\Orgs\Models\Pivot\Position
+auth()->user()->activePosition();
+```
+
+How to open new Job Position (via Office & Job Title).
+
+```php
+
+// create an Office
+$newOffice = $organizer->offices()->create('Jakarta Central Office');
+
+// create a Job title
+$newTitle = $organizer->titles()->create('Vice President');
+
+// create a position by office
+$newPosition = $newOffice->openPositionFor($newTitle, quota: 1);
+
+// or create a position by title (quota is optional)
+$newPosition = $newTitle->openPositionIn($newOffice, quota: 1);
+
+// for addition, you might get available/unavailable positions information via Office (TBA)
+$newOffice->availablePositions();
+$newOffice->unavailablePositions();
+$newOffice->positions(); // all positions
+
+// for addition, you might get information about Offices that open for specific Job Title
+$customerServiceTitle->availableOffices();
+$customerServiceTitle->offices(); // all offices
+
+```
+
+### Use Case - managing hierarchy between Offices
+
+Manage hierarchy between central and branch offices.
+
+```php
+
+// manage via offices resolver
+/** @var \Dicibi\Orgs\Resolvers\OfficeResolver $resolver */
+$resolver->attach(child: $surabayaBranch, parent: $jakartaCentralOffice);
+$resolver->attach(child: $bandungBranch, parent: $jakartaCentralOffice);
+$resolver->attach(child: $lampungBranch, parent: $jakartaCentralOffice);
+$resolver->tree($jakartaCentralOffice); // get tree
+
+// or manage directly via NodeTrait (kalnoy/nestedset)
+/** @var \Dicibi\Orgs\Models\Office|NodeTrait $jakartaCentralOffice */
+$jakartaCentralOffice->appendNode($surabayaBranch);
+$jakartaCentralOffice->appendNode($bandungBranch);
+$jakartaCentralOffice->appendNode($lampungBranch);
+$jakartaCentralOffice->tree();
+
+```
+
+### Use Case - managing hierarchy between Job Titles
+
+Manage hierarchy between job titles.
+
+```php
+
+// manage via titles resolver
+/** @var \Dicibi\Orgs\Resolvers\JobTitleResolver $resolver */
+$resolver->attach(child: $presidentDirector, parent: $presidentCommissioner);
+$resolver->attach(child: $financeDirector, parent: $presidentDirector);
+$resolver->attach(child: $operationsDirector, parent: $presidentDirector);
+$resolver->tree($presidentCommissioner);
+
+// or manage directly via NodeTrait (kalnoy/nestedset)
+/** @var \Dicibi\Orgs\Models\Pivot\Position|NodeTrait $presidentCommissioner */
+$presidentCommissioner->appendNode($presidentDirector);
+$presidentDirector->appendNode($financeDirector);
+$presidentDirector->appendNode($operationsDirector);
+$presidentCommissioner->tree();
+
+```
+
+### Use Case - building hierarchy with structure template
+
+Instead of managing organization structure in each office, we can manage 'template of structure' that can be assigned to the office. When we had 1 central office, and 30 branches. We do not want to define 31 offices structure each one of it every time.
+
+By using 'structure' template, we can handle that. Let's say in 31 offices, there are office structure that called: Central Office, Branch Office, and Site.
+
+```php
+
+/** @var \Dicibi\Orgs\Resolvers\StructureResolver $structure */
+$structure->create('ID Central');
+$structure->create('Branch');
+$structure->create('Site');
+
+/** @var \Dicibi\Orgs\Resolvers\JobTitleResolver $title */
+$title->create('Head', structure: 'ID Central');
+  $title->create('Vice-Head', structure: 'ID Central', attachTo: 'Head');
+  $title->create('Division Head', structure: 'ID Central', attachTo: 'Head');
+    $title->create('Group Head', structure: 'ID Central', attachTo: 'Division Head');
+
+/** @var \Dicibi\Orgs\Resolvers\OfficeResolver $office */
+$office->create('Jakarta Central Office', structure: 'ID Central');
+$office->create('Aceh Branch Office', structure: 'Branch');
+$office->create('Jakarta Branch Office', structure: 'Branch');
+$office->create('Surabaya Site', structure: 'Site');
+```
+
+Within each structure, we can define unique Job Title structure. In Central structure, we might define Directorate, Division Head, Group Head etc. But in Branch office, that'll be no Directorate, Division or Group, but it contains Head Branch, Vice-Head Branch, Section Head, Manager etc.
+
+It's still possible to setup cross-structure hierarchy, let's say we had Branch Structure, and Central Structure. It's possible that **Head Branch** placed as subordinate of **Division Head of Operations**.
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,6 +1,6 @@
 <?php
 
-namespace Dicibi\Orgs\Contracts;
+namespace Dicibi\Orgs\Contracts\Office;
 
 use Dicibi\Orgs\Contracts\Nested\CanNestedSet;
 use Dicibi\Orgs\Models\Office;

@@ -3,9 +3,9 @@
 namespace Dicibi\Orgs\Resolvers;
 
 use Dicibi\Orgs\Concerns\HasNestedAction;
-use Dicibi\Orgs\Contracts\CanCreateOffice;
 use Dicibi\Orgs\Contracts\Nested\CanManageNestedSet;
 use Dicibi\Orgs\Contracts\Nested\CanNestedSet;
+use Dicibi\Orgs\Contracts\Office\CanCreateOffice;
 use Dicibi\Orgs\Models\Office;
 use Dicibi\Orgs\Models\Structure;
 use Illuminate\Contracts\Database\Query\Builder;
@@ -15,8 +15,14 @@ class OfficeResolver implements CanManageNestedSet, CanCreateOffice
 {
     use HasNestedAction;
 
-    public function create(string $name, Structure $structure = null, ?CanNestedSet $attachTo = null): CanNestedSet|Office
+    public function create(string $name, Structure|string $structure = null, ?CanNestedSet $attachTo = null): CanNestedSet|Office
     {
+        if (is_string($structure)) {
+            $structure = Structure::query()
+                ->where('name', $structure)
+                ->first();
+        }
+
         $newOffice = new Office;
         $newOffice->name = $name;
         $newOffice->structure = $structure;

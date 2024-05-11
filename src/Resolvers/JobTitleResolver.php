@@ -3,7 +3,7 @@
 namespace Dicibi\Orgs\Resolvers;
 
 use Dicibi\Orgs\Concerns\HasNestedAction;
-use Dicibi\Orgs\Contracts\CanCreateJobTitle;
+use Dicibi\Orgs\Contracts\JobTitle\CanCreateJobTitle;
 use Dicibi\Orgs\Contracts\Nested\CanManageNestedSet;
 use Dicibi\Orgs\Contracts\Nested\CanNestedSet;
 use Dicibi\Orgs\Models\Job;

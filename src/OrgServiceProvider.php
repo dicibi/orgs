@@ -15,13 +15,11 @@ class OrgServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/orgs.php', 'orgs');
 
-        $this->app->bind('orgs', function (Application $app) {
-            return new Organizer(
-                new StructureResolver(),
-                new JobTitleResolver(),
-                new OfficeResolver()
-            );
-        });
+        $this->app->bind('orgs', fn(Application $app) => new Organizer(
+            $app->make(StructureResolver::class),
+            $app->make(JobTitleResolver::class),
+            $app->make(OfficeResolver::class),
+        ));
     }
 
     function boot(): void
