@@ -1,3 +1,7 @@
+![Test](https://github.com/dicibi/orgs/actions/workflows/ci.yml/badge.svg)
+[![codecov](https://codecov.io/gh/dicibi/orgs/graph/badge.svg?token=kYkHRetPu0)](https://codecov.io/gh/dicibi/orgs)
+
+
 # The Orgs.
 
 This package following standard of corporate structure. It doesn't include the default structure or names, you define it
